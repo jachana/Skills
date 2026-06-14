@@ -3,10 +3,11 @@ name: ship
 description: >-
   Take the top kanban card all the way to shipped: claim it, verify it isn't already implemented,
   build backend+frontend+tests, commit, and move it to "In review" — keeping the board in sync.
-  Works OFFLINE against a local board.json OR ONLINE against Trello (auto-detected; no account required).
+  Provider-agnostic: works OFFLINE against a local board.json OR ONLINE against Trello / Jira / others
+  (auto-detected; no account required).
   Use when the user says "/ship", "ship the next card", "pick and ship a card", "trabaja la siguiente tarjeta",
   "toma la próxima tarjeta del tablero y déjala lista para revisión".
-  Requires the board.py helper (this skill's category ships it under trello/scripts/board.py).
+  Requires the board.py helper (this skill's category ships it under project-management/scripts/board.py).
 ---
 
 # Ship a card (online or offline)

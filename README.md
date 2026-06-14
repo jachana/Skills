@@ -17,7 +17,7 @@ git clone https://github.com/jachana/skills.git
 # Per-user (all projects):
 cp -r skills/2nd-brain/brain-sync  ~/.claude/skills/
 # Or per-project:
-cp -r skills/trello/ship           <your-repo>/.claude/skills/
+cp -r skills/project-management/ship  <your-repo>/.claude/skills/
 ```
 
 In Claude Code, invoke a skill with the `Skill` tool or `/skill-name`. If a skill ships a `.env.example`, copy it to `.env`, fill in your own values, and **never commit the `.env`** (the repo's `.gitignore` already blocks it).
@@ -33,7 +33,7 @@ No credentials live in this repo. Skills that need keys (Trello, email, etc.) sh
 | Folder | What's inside |
 |---|---|
 | [`2nd-brain/`](2nd-brain/) | **Obsidian "second brain" protocol.** Register a repo with a central Obsidian vault and keep a bidirectional `.brain/` bridge in sync (tasks down, status/log/answers up). |
-| [`trello/`](trello/) | **Kanban ship workflow.** Pick → implement → test → ship a card. Works against **Trello** *or* a local offline board file — same skill, auto-detects which. |
+| [`project-management/`](project-management/) | **Provider-agnostic kanban.** ship · triage · breakdown · refine (groom/enrich) · prune. Runs **locally**, on **Trello**, or **Jira** — same skills, auto-detected provider. |
 | [`reporting/`](reporting/) | **Human-readable reports** and **proposal writing** — turn raw work/data into something a person actually wants to read. |
 | [`email/`](email/) | **Email assistant** — draft replies grounded in your second-brain, and track multi-message threads so context never gets lost. |
 | [`quality/`](quality/) | **`prove-it` validation discipline** — forces the model to *programmatically verify* claims and show the evidence instead of asserting "done ✅". |
