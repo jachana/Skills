@@ -1,0 +1,22 @@
+# Secrets — NEVER commit. Only .env.example files are tracked.
+.env
+*.env
+!.env.example
+**/.env
+!**/.env.example
+
+# Local working state for the offline kanban
+board.json
+**/board.json
+tasks.local.json
+
+# Logs / scratch
+logs/
+*.log
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
