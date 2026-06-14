@@ -54,7 +54,7 @@ If no `.brain/` exists, this skill doesn't apply — proceed normally.
   ```
   - YYYY-MM-DD HH:MM — [TYPE] short description
   ```
-  TYPES: `WORK` · `DECISION` · `MILESTONE` · `BLOCKER` · `LESSON` · `HANDOFF`
+  TYPES: `WORK` · `DECISION` · `MILESTONE` · `BLOCKER` · `LESSON` · `HANDOFF` · `CROSS-REF` (link to another project — see Project isolation)
 
 ### 3. Periodically + at session end — update `STATUS.md` frontmatter
 - `last-activity:` (today)
@@ -62,6 +62,18 @@ If no `.brain/` exists, this skill doesn't apply — proceed normally.
 - `phase:` (if changed: `kickoff | discovery | design | build | uat | delivered | maintenance | closed`)
 - `blockers:` (array)
 - `next-action:` (one-liner)
+
+## Project isolation (single-project by default)
+You are the agent for **this one project**. Stay in your lane:
+- ❌ Do **not** pull in, assume, or act on information from *other* projects — even if you happen to know it. This project's work is decided by *its* `CONTEXT.md`/`TASKS.md` only.
+- ✅ Exception: the user **explicitly** asks you to use another project's work ("reuse the auth flow from Aclara"). Then it's fine — they opened the door.
+- ✅ If, while working, you notice something here that's **relevant to another project** (a reusable component, a shared vendor, a lesson, a duplicate effort), do **not** go act on it. Instead **report it up** to the brain as a one-line signal in `LOG.md`:
+  ```
+  - YYYY-MM-DD HH:MM — [CROSS-REF] <what + which other project it relates to>
+  ```
+  The root brain harvests `[CROSS-REF]` entries (via the `brain-connect` skill) and decides whether to propagate. Your job is to flag, not to cross-pollinate.
+
+This keeps each project's reasoning clean while still feeding the brain the links it needs to connect things globally.
 
 ## NEVER
 - ❌ Edit `CONTEXT.md`, `TASKS.md` (beyond ticking), `ASKS.md`, `INSTRUCTIONS.md` — the brain owns them.

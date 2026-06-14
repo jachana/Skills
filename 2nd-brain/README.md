@@ -17,10 +17,21 @@ Turn an [Obsidian](https://obsidian.md) vault into a **central brain** that dele
 
 ## Skills in this category
 
+**Single-project skills** (run inside one repo):
+
 | Skill | Use it when… |
 |---|---|
 | [`brain-init`](brain-init/) | You want to **register the current repo** with the central brain — creates the vault project note and scaffolds `.brain/`. |
-| [`brain-sync`](brain-sync/) | You're **working inside a repo that already has a `.brain/` folder** — defines exactly what to read, what to update, and what to never touch. Triggers automatically. |
+| [`brain-sync`](brain-sync/) | You're **working inside a repo that already has a `.brain/` folder** — defines exactly what to read, what to update, and what to never touch. Triggers automatically. Enforces **project isolation**: never act on other projects' info unless prompted; instead log a `[CROSS-REF]` signal up to the brain. |
+
+**Root-brain skills** (run over the whole vault — cross-project):
+
+| Skill | Use it when… |
+|---|---|
+| [`brain-report`](brain-report/) | You want a **generalized progress report** across all projects — movement over a time period, completed work, pending tasks, overall states, what needs attention. Runs `scripts/Brain-Report.ps1` (deterministic) then adds narrative. |
+| [`brain-connect`](brain-connect/) | You want to **find reuse across projects** — where something from one project is useful in another. Runs `scripts/Brain-Connect.ps1` to surface candidate pairs, then reasons over the notes for concrete recommendations. |
+
+> **Isolation model:** a local project agent reasons only from *its own* `.brain/` files. The root brain is the only thing that looks across projects — it does so on demand (`brain-report`, `brain-connect`) and by harvesting the `[CROSS-REF]` signals local agents log up. Clean per-project reasoning, global awareness at the center.
 
 ## Setup
 
