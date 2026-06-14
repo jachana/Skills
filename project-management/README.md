@@ -15,12 +15,13 @@ Adding another tool = implement `pull()`/`push()` in a provider class in `script
 | Skill | Does |
 |---|---|
 | [`ship`](ship/) | Take the top card all the way to shipped — claim, verify it isn't already done, build + test, commit, move to *In review*, keep the board in sync. |
-| [`triage`](triage/) | Sort an unsorted pile — route each item to the right list, set priority, flag dupes/oversized/blocked. |
+| [`triage`](triage/) | Sort an unsorted pile — route each item, set priority **and size** (absolute *or* by comparison to 2 reference cards), **detect dependencies**, flag dupes/oversized/blocked. |
 | [`breakdown`](breakdown/) | Split an oversized/vague card into 3–7 small, ordered, independently-shippable subtasks with acceptance criteria. |
 | [`refine`](refine/) | **Backlog refinement / groom / enrich** (umbrella) — bring thin cards to "ready" (context + acceptance criteria + priority + right-sized); health-pass the top of the backlog. |
 | [`prune`](prune/) | Remove dead weight — duplicates, done-but-open, obsolete, zombie cards — with confirmation before deleting. |
+| [`dependency-graph`](dependency-graph/) | Print the dependency graph of recently-closed + open cards — Mermaid + ASCII tree + cycle/dangling diagnostics. Reads `depends-on:` lines that `triage` writes. |
 
-They hand off to each other: `triage` flags items for `breakdown` (too big), `refine` (too thin), or `prune` (dead/dupe).
+They hand off to each other: `triage` flags items for `breakdown` (too big), `refine` (too thin), or `prune` (dead/dupe), records `depends-on:` lines, and `dependency-graph` visualizes the result.
 
 ## The engine — `scripts/board.py`
 
@@ -35,6 +36,9 @@ python scripts/board.py ship  "Card"   # -> In review
 python scripts/board.py show | status
 python scripts/board.py pull            # remote -> local (remote wins)
 python scripts/board.py push            # local  -> remote
+
+python scripts/dep_graph.py             # dependency graph: Mermaid + tree + cycles
+python scripts/dep_graph.py --open-only # hide finished cards
 ```
 Spanish flag aliases work (`--lista`, `--a`, `--listas`). **Conflict rule: remote wins** — `pull` before claiming, `push` after shipping.
 
