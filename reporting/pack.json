@@ -1,0 +1,15 @@
+{
+  "title": "Reporting",
+  "summary": "Turns raw work, data, and project context into documents a person actually wants to read — reports that lead with the conclusion and back claims with evidence, and proposals/quotes grounded in real capabilities from the second-brain rather than invented claims.",
+  "problem": "Reports and proposals are slow to write and often unreadable — buried conclusions, filler, unsupported claims, or made-up capabilities. This produces skimmable, evidence-backed, audience-fit output fast.",
+  "skills": [
+    {
+      "name": "human-readable-report",
+      "purpose": "Write a status update, summary, analysis, retro, or briefing that leads with the conclusion, structures for skimming, and cuts filler — adapted to audience and language."
+    },
+    {
+      "name": "proposal-writer",
+      "purpose": "Draft a client proposal, quote, or pitch — problem, scope, deliverables, timeline, price, assumptions, CTA — grounded in real second-brain/project context."
+    }
+  ]
+}

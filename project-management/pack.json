@@ -1,0 +1,31 @@
+{
+  "title": "Project Management",
+  "summary": "A provider-agnostic kanban toolkit: the same board workflow runs locally (board.json), on Trello, or on Jira — auto-detected, no account required. Covers the full card lifecycle from intake to shipped: triage and size, refine, break down, prune dead weight, map dependencies, and ship with proof.",
+  "problem": "Board management is tool-locked and inconsistent — work lacks sizing, dependencies are invisible, backlogs rot, and cards get marked done without proof. This standardizes the workflow whether or not you have an online board.",
+  "skills": [
+    {
+      "name": "ship",
+      "purpose": "Take the top card from claim to \"In review\": verify it isn't already done, build + test, commit, move it, keep the board in sync — never on an unproven claim."
+    },
+    {
+      "name": "triage",
+      "purpose": "Sort an unsorted pile: route, prioritize, size (absolute OR by comparison to 2 reference cards), detect dependencies (writes depends-on:), flag dupes/oversized/blocked."
+    },
+    {
+      "name": "refine",
+      "purpose": "Backlog refinement / groom / enrich: bring thin cards to \"ready\" — context, acceptance criteria, estimate, priority — and health-pass the backlog top."
+    },
+    {
+      "name": "breakdown",
+      "purpose": "Split an oversized or vague card into 3–7 small, ordered, independently-shippable subtasks with acceptance criteria."
+    },
+    {
+      "name": "prune",
+      "purpose": "Remove dead weight — duplicates, done-but-open, obsolete, zombie cards — proposing removals with reasons and confirming before deleting."
+    },
+    {
+      "name": "dependency-graph",
+      "purpose": "Print the dependency graph of open + recently-closed cards — Mermaid + ASCII tree + cycle/dangling diagnostics — from the depends-on: lines triage writes."
+    }
+  ]
+}
