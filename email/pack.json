@@ -1,11 +1,15 @@
 {
   "title": "Email",
-  "summary": "Drafts email replies and new messages grounded in the user's second-brain (project context, prior decisions) and keeps multi-message threads coherent over a long back-and-forth. Grounds facts in the brain — asks instead of inventing — and never sends without explicit approval.",
-  "problem": "Email replies lose context across a long thread and risk stating things that aren't true. This grounds every draft in real project knowledge and tracks the chain so nothing gets contradicted or forgotten.",
-  "skills": [
-    {
-      "name": "email-assistant",
-      "purpose": "Draft replies/new messages grounded in the second-brain and track multi-message threads so a long exchange stays coherent. Drafts only — never sends unapproved."
+  "description": "Draft email replies grounded in your second brain and keep long threads coherent. Asks instead of inventing; never sends without approval.",
+  "order": 4,
+  "skills": {
+    "email-assistant": "Draft replies and new messages grounded in the second brain, and track multi-message threads."
+  },
+  "es": {
+    "title": "Correo",
+    "description": "Redacta respuestas de correo basadas en tu segundo cerebro y mantén coherentes los hilos largos. Pregunta en vez de inventar; nunca envía sin aprobación.",
+    "skills": {
+      "email-assistant": "Redacta respuestas y mensajes nuevos basados en el segundo cerebro, y hace seguimiento de hilos."
     }
-  ]
+  }
 }

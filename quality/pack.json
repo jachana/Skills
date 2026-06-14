@@ -1,11 +1,15 @@
 {
   "title": "Quality",
-  "summary": "A discipline that forces the model to programmatically verify claims and show real evidence — command output, test runs, diffs, queries, and for anything visual a screenshot / preview / short recording — instead of asserting \"done\". Evidence must be real; never mocked, edited, or described without being produced.",
-  "problem": "LLMs declare success without checking, and \"done ✅\" hides broken work. This makes verification mandatory and the proof visible before anything is reported as working, fixed, or passing.",
-  "skills": [
-    {
-      "name": "prove-it-validation",
-      "purpose": "Before claiming any task succeeded, verify it programmatically and show the evidence (output, tests, diffs, screenshots/recordings) — never assert success on faith."
+  "description": "Force the model to verify claims programmatically and show real evidence — output, tests, diffs, screenshots — instead of asserting \"done\".",
+  "order": 5,
+  "skills": {
+    "prove-it-validation": "Before claiming success, verify it programmatically and show the proof; never assert \"done\" on faith."
+  },
+  "es": {
+    "title": "Calidad",
+    "description": "Obliga al modelo a verificar afirmaciones de forma programática y mostrar evidencia real — salida, pruebas, diffs, capturas — en vez de afirmar \"listo\".",
+    "skills": {
+      "prove-it-validation": "Antes de afirmar éxito, verifícalo de forma programática y muestra la prueba; nunca digas \"listo\" por fe."
     }
-  ]
+  }
 }

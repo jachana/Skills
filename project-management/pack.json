@@ -1,31 +1,25 @@
 {
-  "title": "Project Management",
-  "summary": "A provider-agnostic kanban toolkit: the same board workflow runs locally (board.json), on Trello, or on Jira — auto-detected, no account required. Covers the full card lifecycle from intake to shipped: triage and size, refine, break down, prune dead weight, map dependencies, and ship with proof.",
-  "problem": "Board management is tool-locked and inconsistent — work lacks sizing, dependencies are invisible, backlogs rot, and cards get marked done without proof. This standardizes the workflow whether or not you have an online board.",
-  "skills": [
-    {
-      "name": "ship",
-      "purpose": "Take the top card from claim to \"In review\": verify it isn't already done, build + test, commit, move it, keep the board in sync — never on an unproven claim."
-    },
-    {
-      "name": "triage",
-      "purpose": "Sort an unsorted pile: route, prioritize, size (absolute OR by comparison to 2 reference cards), detect dependencies (writes depends-on:), flag dupes/oversized/blocked."
-    },
-    {
-      "name": "refine",
-      "purpose": "Backlog refinement / groom / enrich: bring thin cards to \"ready\" — context, acceptance criteria, estimate, priority — and health-pass the backlog top."
-    },
-    {
-      "name": "breakdown",
-      "purpose": "Split an oversized or vague card into 3–7 small, ordered, independently-shippable subtasks with acceptance criteria."
-    },
-    {
-      "name": "prune",
-      "purpose": "Remove dead weight — duplicates, done-but-open, obsolete, zombie cards — proposing removals with reasons and confirming before deleting."
-    },
-    {
-      "name": "dependency-graph",
-      "purpose": "Print the dependency graph of open + recently-closed cards — Mermaid + ASCII tree + cycle/dangling diagnostics — from the depends-on: lines triage writes."
+  "title": "Project management",
+  "description": "Kanban-style workflow skills. Work locally, or with Trello, Jira and others.",
+  "order": 3,
+  "skills": {
+    "ship": "Take the top card to shipped: claim, build, test, commit, move to review.",
+    "triage": "Sort an incoming backlog: route, prioritize, size (absolute or vs 2 reference cards), and detect dependencies.",
+    "refine": "Backlog refinement: enrich each item with context, acceptance criteria, estimate.",
+    "breakdown": "Split an oversized or vague card into small, independently-shippable subtasks.",
+    "prune": "Remove dead weight: duplicates, done-but-open, obsolete and zombie cards.",
+    "dependency-graph": "Print the dependency graph of open + closed cards: Mermaid, ASCII tree, cycles."
+  },
+  "es": {
+    "title": "Gestión de proyectos",
+    "description": "Skills de flujo tipo kanban. Funcionan en local, o con Trello, Jira y otros.",
+    "skills": {
+      "ship": "Lleva la tarjeta superior hasta entregada: reclama, construye, prueba, commitea, mueve a revisión.",
+      "triage": "Ordena el backlog: clasifica, prioriza, estima (absoluto o vs 2 tarjetas de referencia) y detecta dependencias.",
+      "refine": "Refinamiento del backlog: enriquece cada ítem con contexto, criterios de aceptación y estimación.",
+      "breakdown": "Divide una tarjeta grande o vaga en subtareas pequeñas y entregables por separado.",
+      "prune": "Elimina peso muerto: duplicados, hechas-pero-abiertas, obsoletas y tarjetas zombi.",
+      "dependency-graph": "Imprime el grafo de dependencias de tarjetas abiertas + cerradas: Mermaid, árbol ASCII, ciclos."
     }
-  ]
+  }
 }

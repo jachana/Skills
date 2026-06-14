@@ -1,23 +1,21 @@
 {
-  "title": "2nd Brain",
-  "summary": "Keeps a central Obsidian \"second brain\" vault and your code repos in sync, so project context, tasks, and decisions live in one searchable place instead of scattered across repos and memory. Each repo stays isolated but reports up; the root brain reports across all projects and finds reuse between them.",
-  "problem": "Project knowledge gets lost between repos: context, open tasks, and past decisions live in heads or scattered notes, and lessons learned in one project never reach another.",
-  "skills": [
-    {
-      "name": "brain-init",
-      "purpose": "Register a repo with the central Obsidian vault — create its project note and scaffold the .brain/ bridge folder."
-    },
-    {
-      "name": "brain-sync",
-      "purpose": "Working protocol for any repo containing a .brain/ folder: what to read (context/tasks/asks), what to update (status/log/answers), what never to touch. Stays isolated per-project, reports up."
-    },
-    {
-      "name": "brain-report",
-      "purpose": "Root-brain: generate a cross-project progress report over a time window — what got done, what's pending, project states, what needs attention."
-    },
-    {
-      "name": "brain-connect",
-      "purpose": "Root-brain: find where something built/learned/decided in one project is reusable in another, with concrete \"reuse X from A in B\" recommendations."
+  "title": "2nd brain",
+  "description": "Keep a central Obsidian \"second brain\" and your repos in sync. Context and tasks down, status and decisions up; the root brain reports across all projects and finds reuse between them.",
+  "order": 1,
+  "skills": {
+    "brain-init": "Register a repo with the central vault: create its project note and scaffold the .brain/ bridge.",
+    "brain-sync": "Working protocol for a repo with a .brain/ folder: what to read, what to update, what to never touch.",
+    "brain-report": "Root brain: a cross-project progress report over a time window — done, pending, states, attention.",
+    "brain-connect": "Root brain: find where something built in one project is reusable in another."
+  },
+  "es": {
+    "title": "Segundo cerebro",
+    "description": "Mantén sincronizados un \"segundo cerebro\" central en Obsidian y tus repos. Contexto y tareas bajan, estado y decisiones suben; el cerebro raíz reporta sobre todos los proyectos y encuentra reuso entre ellos.",
+    "skills": {
+      "brain-init": "Registra un repo con el vault central: crea su nota de proyecto y arma el puente .brain/.",
+      "brain-sync": "Protocolo para un repo con carpeta .brain/: qué leer, qué actualizar y qué nunca tocar.",
+      "brain-report": "Cerebro raíz: reporte de avance entre proyectos en un período — hecho, pendiente, estados, atención.",
+      "brain-connect": "Cerebro raíz: encuentra dónde algo hecho en un proyecto es reutilizable en otro."
     }
-  ]
+  }
 }

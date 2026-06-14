@@ -1,15 +1,17 @@
 {
   "title": "Reporting",
-  "summary": "Turns raw work, data, and project context into documents a person actually wants to read — reports that lead with the conclusion and back claims with evidence, and proposals/quotes grounded in real capabilities from the second-brain rather than invented claims.",
-  "problem": "Reports and proposals are slow to write and often unreadable — buried conclusions, filler, unsupported claims, or made-up capabilities. This produces skimmable, evidence-backed, audience-fit output fast.",
-  "skills": [
-    {
-      "name": "human-readable-report",
-      "purpose": "Write a status update, summary, analysis, retro, or briefing that leads with the conclusion, structures for skimming, and cuts filler — adapted to audience and language."
-    },
-    {
-      "name": "proposal-writer",
-      "purpose": "Draft a client proposal, quote, or pitch — problem, scope, deliverables, timeline, price, assumptions, CTA — grounded in real second-brain/project context."
+  "description": "Turn raw work and project context into documents people actually read: reports that lead with the conclusion, and proposals grounded in real capabilities.",
+  "order": 2,
+  "skills": {
+    "human-readable-report": "Write a status update, summary, analysis or briefing — conclusion first, skimmable, evidence-backed.",
+    "proposal-writer": "Draft a client proposal or quote — scope, deliverables, timeline, price — grounded in the second brain."
+  },
+  "es": {
+    "title": "Reportes",
+    "description": "Convierte trabajo en bruto y contexto del proyecto en documentos que la gente sí lee: reportes que parten por la conclusión y propuestas basadas en capacidades reales.",
+    "skills": {
+      "human-readable-report": "Escribe un informe de avance, resumen, análisis o briefing — conclusión primero, escaneable, con evidencia.",
+      "proposal-writer": "Redacta una propuesta o cotización — alcance, entregables, plazos, precio — basada en el segundo cerebro."
     }
-  ]
+  }
 }
