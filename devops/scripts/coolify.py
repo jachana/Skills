@@ -217,3 +217,77 @@ def parse_env_file(text):
             k, v = line.split("=", 1)
             out[k.strip()] = v.strip()
     return out
+
+
+# ── CLI ───────────────────────────────────────────────────────────────────────
+import argparse  # noqa: E402  (kept near CLI for clarity)
+
+
+def build_parser():
+    p = argparse.ArgumentParser(prog="coolify.py", description="Drive a Coolify instance.")
+    p.add_argument("--apply", action="store_true", help="perform writes (default: dry-run)")
+    p.add_argument("--confirm", default=None, help="resource name, required for destructive ops")
+    p.add_argument("--json", action="store_true", help="machine-readable JSON output")
+    p.add_argument("--self-test", action="store_true", help="run the offline test suite and exit")
+    sub = p.add_subparsers(dest="group")
+
+    sub.add_parser("ping")
+    sub.add_parser("resources")
+
+    for g in ("apps", "db", "svc", "server", "project"):
+        gp = sub.add_parser(g).add_subparsers(dest="action")
+        gp.add_parser("list")
+        gp.add_parser("get").add_argument("uuid")
+        gp.add_parser("delete").add_argument("uuid")
+        for life in ("start", "stop", "restart"):
+            gp.add_parser(life).add_argument("uuid")
+
+    # read-only extras
+    apps = _find_sub(p, "apps")
+    apps.add_parser("logs").add_argument("uuid")
+    srv = _find_sub(p, "server")
+    srv.add_parser("validate").add_argument("uuid")
+    srv.add_parser("resources").add_argument("uuid")
+
+    dep = sub.add_parser("deployment").add_subparsers(dest="action")
+    dep.add_parser("get").add_argument("uuid")
+    dep.add_parser("history").add_argument("app_uuid")
+
+    return p
+
+
+def _find_sub(parser, name):
+    """Return the subparsers object attached to subcommand `name`."""
+    for action in parser._actions:
+        if isinstance(action, argparse._SubParsersAction):
+            target = action.choices.get(name)
+            for a in target._actions:
+                if isinstance(a, argparse._SubParsersAction):
+                    return a
+    raise KeyError(name)
+
+
+def dispatch(client, args):
+    g = args.group
+    if g == "ping":
+        return client.get("/version")
+    if g == "resources":
+        return client.get("/resources")
+    if g in LIST_PATHS:
+        act = args.action
+        if act == "list":
+            return client.get(LIST_PATHS[g])
+        if act == "get":
+            return client.get(f"{ITEM_PREFIX[g]}/{args.uuid}")
+        if g == "apps" and act == "logs":
+            return client.get(f"/applications/{args.uuid}/logs")
+        if g == "server" and act == "validate":
+            return client.get(f"/servers/{args.uuid}/validate")
+        if g == "server" and act == "resources":
+            return client.get(f"/servers/{args.uuid}/resources")
+    if g == "deployment":
+        if args.action == "get":
+            return client.get(f"/deployments/{args.uuid}")
+        if args.action == "history":
+            return client.get(f"/deployments/applications/{args.app_uuid}")
+    raise ValueError(f"unknown or write command not yet wired: {g} {getattr(args,'action',None)}")

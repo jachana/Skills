@@ -168,5 +168,31 @@ class TestRouting(unittest.TestCase):
         self.assertEqual(coolify.parse_env_file('{"A":"1","B":"2"}'), {"A": "1", "B": "2"})
 
 
+class TestDispatchReads(unittest.TestCase):
+    def _run(self, argv, responses):
+        t = RecordingTransport(responses)
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t)
+        args = coolify.build_parser().parse_args(argv)
+        return coolify.dispatch(c, args), t
+
+    def test_ping(self):
+        out, t = self._run(["ping"], [(200, {}, {"version": "v4.0.0"})])
+        self.assertEqual(out["version"], "v4.0.0")
+        self.assertTrue(t.calls[0][1].endswith("/version"))
+
+    def test_apps_list(self):
+        out, t = self._run(["apps", "list"], [(200, {}, [{"uuid": "a1"}])])
+        self.assertEqual(out[0]["uuid"], "a1")
+        self.assertTrue(t.calls[0][1].endswith("/applications"))
+
+    def test_db_get(self):
+        out, t = self._run(["db", "get", "u9"], [(200, {}, {"uuid": "u9"})])
+        self.assertTrue(t.calls[0][1].endswith("/databases/u9"))
+
+    def test_deployment_get(self):
+        out, t = self._run(["deployment", "get", "d1"], [(200, {}, {"status": "finished"})])
+        self.assertTrue(t.calls[0][1].endswith("/deployments/d1"))
+
+
 if __name__ == "__main__":
     unittest.main()
