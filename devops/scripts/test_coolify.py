@@ -137,7 +137,7 @@ class TestDeployState(unittest.TestCase):
             (200, {}, {"status": "in_progress"}),
             (200, {}, {"status": "finished", "logs": "done"}),
         ])
-        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t)
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, sleeper=lambda *_: None)
         dep = coolify.wait_for_deployment(c, "dep1", interval=1, sleeper=lambda *_: None)
         self.assertEqual(dep["status"], "finished")
         self.assertEqual(len(t.calls), 3)
