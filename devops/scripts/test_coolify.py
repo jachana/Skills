@@ -150,5 +150,23 @@ class TestDeployState(unittest.TestCase):
         self.assertTrue(dep.get("_timed_out"))
 
 
+class TestRouting(unittest.TestCase):
+    def test_tables_present(self):
+        self.assertEqual(coolify.LIST_PATHS["apps"], "/applications")
+        self.assertEqual(coolify.APP_CREATE["public"], "/applications/public")
+        self.assertEqual(set(coolify.DB_ENGINES), {
+            "postgresql", "mysql", "mariadb", "mongodb",
+            "redis", "keydb", "dragonfly", "clickhouse"})
+        self.assertEqual(coolify.ENV_BASE["svc"], "/services")
+
+    def test_parse_env_file_keyval(self):
+        self.assertEqual(
+            coolify.parse_env_file("# c\nFOO=bar\n\nBAZ=qux=1\n"),
+            {"FOO": "bar", "BAZ": "qux=1"})
+
+    def test_parse_env_file_json(self):
+        self.assertEqual(coolify.parse_env_file('{"A":"1","B":"2"}'), {"A": "1", "B": "2"})
+
+
 if __name__ == "__main__":
     unittest.main()

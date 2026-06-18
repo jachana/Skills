@@ -181,3 +181,39 @@ def wait_for_deployment(client, dep_uuid, timeout=600, interval=3, sleeper=None)
             return dep
         sleeper(interval)
         waited += interval
+
+
+# ── resource routing tables ───────────────────────────────────────────────────
+LIST_PATHS = {
+    "apps": "/applications",
+    "db": "/databases",
+    "svc": "/services",
+    "server": "/servers",
+    "project": "/projects",
+}
+ITEM_PREFIX = dict(LIST_PATHS)
+
+APP_CREATE = {
+    "public": "/applications/public",
+    "private-github-app": "/applications/private-github-app",
+    "private-deploy-key": "/applications/private-deploy-key",
+    "dockerfile": "/applications/dockerfile",
+    "dockerimage": "/applications/dockerimage",
+}
+DB_ENGINES = {e: f"/databases/{e}" for e in (
+    "postgresql", "mysql", "mariadb", "mongodb",
+    "redis", "keydb", "dragonfly", "clickhouse")}
+ENV_BASE = {"app": "/applications", "db": "/databases", "svc": "/services"}
+
+
+def parse_env_file(text):
+    text = text.strip()
+    if text.startswith("{"):
+        return json.loads(text)
+    out = {}
+    for line in text.splitlines():
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            k, v = line.split("=", 1)
+            out[k.strip()] = v.strip()
+    return out
