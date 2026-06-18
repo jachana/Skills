@@ -153,3 +153,31 @@ class CoolifyClient:
 
     def delete(self, p, **kw):
         return self.request("DELETE", p, **kw)
+
+
+# ── deployment state machine ──────────────────────────────────────────────────
+TERMINAL_SUCCESS = {"finished"}
+TERMINAL_FAILURE = {"failed", "cancelled-by-user"}
+
+
+def classify_status(s):
+    if s in TERMINAL_SUCCESS:
+        return "success"
+    if s in TERMINAL_FAILURE:
+        return "failure"
+    return "running"  # queued / in_progress / unknown → keep polling
+
+
+def wait_for_deployment(client, dep_uuid, timeout=600, interval=3, sleeper=None):
+    sleeper = sleeper or client.sleeper
+    waited = 0
+    dep = {}
+    while True:
+        dep = client.get(f"/deployments/{dep_uuid}")
+        if classify_status(dep.get("status", "")) != "running":
+            return dep
+        if waited >= timeout:
+            dep["_timed_out"] = True
+            return dep
+        sleeper(interval)
+        waited += interval

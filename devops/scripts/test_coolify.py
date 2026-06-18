@@ -122,5 +122,33 @@ class TestRetry(unittest.TestCase):
         self.assertEqual(cm.exception.status, 429)
 
 
+class TestDeployState(unittest.TestCase):
+    def test_classify(self):
+        self.assertEqual(coolify.classify_status("finished"), "success")
+        self.assertEqual(coolify.classify_status("failed"), "failure")
+        self.assertEqual(coolify.classify_status("cancelled-by-user"), "failure")
+        self.assertEqual(coolify.classify_status("in_progress"), "running")
+        self.assertEqual(coolify.classify_status("queued"), "running")
+        self.assertEqual(coolify.classify_status("weird-new-status"), "running")
+
+    def test_wait_polls_until_terminal(self):
+        t = RecordingTransport([
+            (200, {}, {"status": "queued"}),
+            (200, {}, {"status": "in_progress"}),
+            (200, {}, {"status": "finished", "logs": "done"}),
+        ])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t)
+        dep = coolify.wait_for_deployment(c, "dep1", interval=1, sleeper=lambda *_: None)
+        self.assertEqual(dep["status"], "finished")
+        self.assertEqual(len(t.calls), 3)
+
+    def test_wait_times_out(self):
+        t = RecordingTransport([(200, {}, {"status": "in_progress"})] * 50)
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t)
+        dep = coolify.wait_for_deployment(c, "dep1", timeout=3, interval=1,
+                                          sleeper=lambda *_: None)
+        self.assertTrue(dep.get("_timed_out"))
+
+
 if __name__ == "__main__":
     unittest.main()
