@@ -7,7 +7,7 @@ also need --confirm <resource-name>.
 
 Run `python coolify.py --self-test` to run the offline test suite.
 """
-import json, os, sys, time, urllib.error, urllib.request
+import argparse, json, os, sys, time, urllib.error, urllib.request
 from pathlib import Path
 
 
@@ -220,8 +220,6 @@ def parse_env_file(text):
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
-import argparse  # noqa: E402  (kept near CLI for clarity)
-
 
 def build_parser():
     p = argparse.ArgumentParser(prog="coolify.py", description="Drive a Coolify instance.")
@@ -261,6 +259,8 @@ def _find_sub(parser, name):
     for action in parser._actions:
         if isinstance(action, argparse._SubParsersAction):
             target = action.choices.get(name)
+            if target is None:
+                raise KeyError(name)
             for a in target._actions:
                 if isinstance(a, argparse._SubParsersAction):
                     return a
