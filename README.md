@@ -37,6 +37,7 @@ No credentials live in this repo. Skills that need keys (Trello, email, etc.) sh
 | [`reporting/`](reporting/) | **Human-readable reports** and **proposal writing** — turn raw work/data into something a person actually wants to read. |
 | [`email/`](email/) | **Email assistant** — draft replies grounded in your second-brain, and track multi-message threads so context never gets lost. |
 | [`quality/`](quality/) | **`prove-it` validation discipline** — forces the model to *programmatically verify* claims and show the evidence instead of asserting "done ✅". |
+| [`devops/`](devops/) | **Coolify control.** Drive a self-hosted Coolify PaaS — resource management (`coolify`), build-validated deploys (`coolify-deploy`), and read-only config audits (`coolify-audit`) — via one stdlib-only API helper. Dry-run by default. |
 
 Each category folder has its own `README.md` with setup details.
 
