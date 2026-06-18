@@ -43,7 +43,7 @@ def load_env(start: Path):
             break
 
 
-def load_config(start: Path = None):
+def load_config(start: Path | None = None):
     load_env(start or Path.cwd())
     base = os.environ.get("COOLIFY_BASE_URL", "").strip().rstrip("/")
     token = os.environ.get("COOLIFY_API_TOKEN", "").strip()
