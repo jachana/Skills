@@ -265,6 +265,7 @@ class TestMain(unittest.TestCase):
             [{"uuid": "u1", "name": "web", "status": "running:healthy"}], as_json=False)
         self.assertIn("u1", s)
         self.assertIn("web", s)
+        self.assertIn("running:healthy", s)
 
     def test_main_selftest_returns_int(self):
         # Run a trivially-true subset so we don't recurse the whole suite slowly:

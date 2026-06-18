@@ -406,11 +406,12 @@ def run_self_test(pattern=None):
 
 
 def main(argv=None):
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
     if args.self_test:
         return run_self_test()
     if not args.group:
-        build_parser().print_help()
+        parser.print_help()
         return 2
     try:
         base, token = load_config()
