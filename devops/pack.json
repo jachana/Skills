@@ -1,0 +1,19 @@
+{
+  "title": "DevOps",
+  "description": "Drive a self-hosted Coolify PaaS from Claude Code — resource management, build-validated deploys, and read-only config audits — via one stdlib-only API helper. Dry-run by default.",
+  "order": 6,
+  "skills": {
+    "coolify": "Manage Coolify resources (apps, databases, services, servers, projects, env vars) over the API. Reads run freely; writes are dry-run until --apply.",
+    "coolify-deploy": "Trigger a Coolify deploy, poll the build to a terminal state, verify health, and report PASS/FAIL. Never reports success on a red build.",
+    "coolify-audit": "Read-only audit of a Coolify instance: resource inventory, env-var hygiene, exposed ports, servers needing validation."
+  },
+  "es": {
+    "title": "DevOps",
+    "description": "Controla un Coolify autoalojado desde Claude Code — gestión de recursos, despliegues validados por build y auditorías de configuración de solo lectura — con un ayudante de API sin dependencias. Modo simulación por defecto.",
+    "skills": {
+      "coolify": "Gestiona recursos de Coolify (apps, bases de datos, servicios, servidores, proyectos, variables de entorno) por la API. Las lecturas corren libres; las escrituras son simuladas hasta usar --apply.",
+      "coolify-deploy": "Dispara un despliegue en Coolify, sondea el build hasta un estado terminal, verifica la salud y reporta PASS/FAIL. Nunca reporta éxito con un build en rojo.",
+      "coolify-audit": "Auditoría de solo lectura de una instancia Coolify: inventario de recursos, higiene de variables de entorno, puertos expuestos y servidores que requieren validación."
+    }
+  }
+}
