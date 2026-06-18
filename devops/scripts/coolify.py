@@ -379,3 +379,52 @@ def dispatch(client, args):
         return client.post("/deploy?" + "&".join(q))
 
     raise ValueError(f"unknown or write command not yet wired: {g} {getattr(args,'action',None)}")
+
+
+# ── output + entrypoint ───────────────────────────────────────────────────────
+def format_output(obj, as_json=False):
+    if isinstance(obj, DryRun):
+        return json.dumps(obj.to_dict(), indent=2) if as_json else str(obj)
+    if as_json:
+        return json.dumps(obj, indent=2)
+    if isinstance(obj, list) and obj and isinstance(obj[0], dict) and "uuid" in obj[0]:
+        rows = [f"{i.get('uuid',''):36}  {str(i.get('name','')):24}  {i.get('status','')}"
+                for i in obj]
+        return "\n".join(rows)
+    return json.dumps(obj, indent=2)
+
+
+def run_self_test(pattern=None):
+    import unittest
+    here = Path(__file__).resolve().parent
+    loader = unittest.TestLoader()
+    if pattern:
+        loader.testNamePatterns = [f"*{pattern}*"]
+    suite = loader.discover(str(here), pattern="test_coolify.py")
+    result = unittest.TextTestRunner(verbosity=2).run(suite)
+    return 0 if result.wasSuccessful() else 1
+
+
+def main(argv=None):
+    args = build_parser().parse_args(argv)
+    if args.self_test:
+        return run_self_test()
+    if not args.group:
+        build_parser().print_help()
+        return 2
+    try:
+        base, token = load_config()
+        client = CoolifyClient(base, token, apply=args.apply)
+        out = dispatch(client, args)
+        print(format_output(out, as_json=args.json))
+        return 0
+    except (ConfigError, ConfirmError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+    except APIError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

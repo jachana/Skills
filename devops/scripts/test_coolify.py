@@ -254,5 +254,23 @@ class TestDispatchWrites(unittest.TestCase):
         self.assertTrue(t.calls[0][1].endswith("/applications/u1/envs/e9"))
 
 
+class TestMain(unittest.TestCase):
+    def test_format_json_dryrun(self):
+        dr = coolify.DryRun("POST", "/applications/u1/restart", None)
+        s = coolify.format_output(dr, as_json=True)
+        self.assertEqual(json.loads(s)["dry_run"], True)
+
+    def test_format_table_list(self):
+        s = coolify.format_output(
+            [{"uuid": "u1", "name": "web", "status": "running:healthy"}], as_json=False)
+        self.assertIn("u1", s)
+        self.assertIn("web", s)
+
+    def test_main_selftest_returns_int(self):
+        # Run a trivially-true subset so we don't recurse the whole suite slowly:
+        rc = coolify.run_self_test(pattern="test_classify")
+        self.assertEqual(rc, 0)
+
+
 if __name__ == "__main__":
     unittest.main()
