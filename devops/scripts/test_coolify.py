@@ -67,5 +67,37 @@ class TestConfig(unittest.TestCase):
         self.assertIn("/api/v1", err.getvalue())
 
 
+class TestSafety(unittest.TestCase):
+    def test_write_is_dryrun_and_skips_transport(self):
+        t = RecordingTransport([])  # empty: any transport call would IndexError
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=False)
+        out = c.post("/applications/uuid1/restart")
+        self.assertIsInstance(out, coolify.DryRun)
+        self.assertEqual(t.calls, [])
+        self.assertIn("WOULD POST", str(out))
+
+    def test_apply_performs_write(self):
+        t = RecordingTransport([(200, {}, {"ok": True})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        out = c.post("/applications/uuid1/restart")
+        self.assertEqual(out, {"ok": True})
+        self.assertEqual(t.calls[0][0], "POST")
+
+    def test_destructive_requires_matching_confirm(self):
+        t = RecordingTransport([])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        with self.assertRaises(coolify.ConfirmError):
+            c.delete("/applications/uuid1", destructive=True,
+                     confirm="wrong", resource_name="web")
+        self.assertEqual(t.calls, [])
+
+    def test_destructive_with_correct_confirm_proceeds(self):
+        t = RecordingTransport([(200, {}, {"deleted": True})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        out = c.delete("/applications/uuid1", destructive=True,
+                       confirm="web", resource_name="web")
+        self.assertEqual(out, {"deleted": True})
+
+
 if __name__ == "__main__":
     unittest.main()

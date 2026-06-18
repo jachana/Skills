@@ -82,6 +82,18 @@ HINTS = {
 MUTATING = {"POST", "PATCH", "PUT", "DELETE"}
 
 
+class DryRun:
+    def __init__(self, method, path, body):
+        self.method, self.path, self.body = method, path, body
+
+    def __str__(self):
+        b = f" body={json.dumps(self.body)}" if self.body is not None else ""
+        return f"WOULD {self.method} {self.path}{b}  (re-run with --apply to perform)"
+
+    def to_dict(self):
+        return {"dry_run": True, "method": self.method, "path": self.path, "body": self.body}
+
+
 class CoolifyClient:
     def __init__(self, base_url, token, apply=False, transport=None,
                  sleeper=time.sleep, max_retries=4):
@@ -102,6 +114,14 @@ class CoolifyClient:
     def request(self, method, path, body=None, *, destructive=False,
                 confirm=None, resource_name=None):
         method = method.upper()
+        if method in MUTATING:
+            if not self.apply:
+                return DryRun(method, path, body)
+            if destructive and confirm != resource_name:
+                raise ConfirmError(
+                    f"Destructive {method} {path} needs --confirm matching the resource "
+                    f"name '{resource_name}' (got {confirm!r})."
+                )
         url = self.base + path
         payload = json.dumps(body) if body is not None else None
         attempt = 0
