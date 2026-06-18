@@ -57,3 +57,79 @@ def load_config(start: Path | None = None):
         print(f"warning: COOLIFY_BASE_URL usually ends with /api/v1 (got {base})",
               file=sys.stderr)
     return base, token
+
+
+# ── transport ───────────────────────────────────────────────────────────────
+def real_transport(method, url, headers, body):
+    data = body.encode() if isinstance(body, str) else body
+    req = urllib.request.Request(url, data=data, headers=headers, method=method)
+    try:
+        with urllib.request.urlopen(req) as r:
+            return r.status, dict(r.headers), r.read()
+    except urllib.error.HTTPError as e:
+        return e.code, dict(e.headers), e.read()
+
+
+HINTS = {
+    401: "Token invalid or missing ability (need read/write/deploy; read:sensitive for env values).",
+    403: "Token lacks the required ability for this action.",
+    404: "Resource not found — check the uuid.",
+    409: "Conflict (often a domain already in use) — retry with force_domain_override=true.",
+    422: "Validation failed — wrong app-create variant or missing required fields.",
+    429: "Rate limited / deploy queue saturated.",
+}
+
+MUTATING = {"POST", "PATCH", "PUT", "DELETE"}
+
+
+class CoolifyClient:
+    def __init__(self, base_url, token, apply=False, transport=None,
+                 sleeper=time.sleep, max_retries=4):
+        self.base = base_url.rstrip("/")
+        self.token = token
+        self.apply = apply
+        self.transport = transport or real_transport
+        self.sleeper = sleeper
+        self.max_retries = max_retries
+
+    def _headers(self):
+        return {
+            "Authorization": f"Bearer {self.token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
+
+    def request(self, method, path, body=None, *, destructive=False,
+                confirm=None, resource_name=None):
+        method = method.upper()
+        url = self.base + path
+        payload = json.dumps(body) if body is not None else None
+        attempt = 0
+        while True:
+            status, headers, raw = self.transport(method, url, self._headers(), payload)
+            if status == 429 and attempt < self.max_retries:
+                wait = float(headers.get("Retry-After", 2) or 2)
+                attempt += 1
+                self.sleeper(wait)
+                continue
+            if status >= 400:
+                text = raw.decode(errors="replace") if raw else ""
+                raise APIError(status, text, HINTS.get(status, ""))
+            if not raw:
+                return {}
+            try:
+                return json.loads(raw)
+            except json.JSONDecodeError:
+                return {"raw": raw.decode(errors="replace")}
+
+    def get(self, p, **kw):
+        return self.request("GET", p, **kw)
+
+    def post(self, p, body=None, **kw):
+        return self.request("POST", p, body, **kw)
+
+    def patch(self, p, body=None, **kw):
+        return self.request("PATCH", p, body, **kw)
+
+    def delete(self, p, **kw):
+        return self.request("DELETE", p, **kw)

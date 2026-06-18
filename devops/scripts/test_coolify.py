@@ -1,9 +1,45 @@
-import io, os, sys, unittest
+import io, json, os, sys, unittest
 from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import coolify  # noqa: E402
+
+
+class RecordingTransport:
+    """Fake transport: returns queued (status, headers, payload) responses and
+    records each (method, url, body) call. No network. `payload` is a dict/list
+    (JSON-encoded), bytes, or None."""
+    def __init__(self, responses):
+        self.responses = list(responses)
+        self.calls = []
+
+    def __call__(self, method, url, headers, body):
+        self.calls.append((method, url, body))
+        status, hdrs, payload = self.responses.pop(0)
+        if isinstance(payload, (bytes, type(None))):
+            raw = payload or b""
+        else:
+            raw = json.dumps(payload).encode()
+        return status, hdrs, raw
+
+
+class TestReads(unittest.TestCase):
+    def test_get_returns_parsed_json(self):
+        t = RecordingTransport([(200, {}, [{"uuid": "a1", "name": "web"}])])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t)
+        out = c.get("/applications")
+        self.assertEqual(out[0]["uuid"], "a1")
+        self.assertEqual(t.calls[0][0], "GET")
+        self.assertTrue(t.calls[0][1].endswith("/applications"))
+
+    def test_http_error_maps_hint(self):
+        t = RecordingTransport([(401, {}, {"message": "unauthorized"})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t)
+        with self.assertRaises(coolify.APIError) as cm:
+            c.get("/applications")
+        self.assertEqual(cm.exception.status, 401)
+        self.assertIn("ability", cm.exception.hint.lower())
 
 
 class TestConfig(unittest.TestCase):
