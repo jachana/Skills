@@ -365,7 +365,7 @@ def dispatch(client, args):
         if args.action == "delete":
             return client.delete(f"{base}/{args.env_uuid}",
                                  destructive=True, confirm=args.confirm,
-                                 resource_name=args.confirm)
+                                 resource_name=args.env_uuid)
 
     # deploy ---------------------------------------------------------------------
     if g == "deploy":

@@ -236,6 +236,23 @@ class TestDispatchWrites(unittest.TestCase):
         self.assertIn("uuid=u1", url)
         self.assertIn("force=true", url)
 
+    def test_env_delete_needs_matching_confirm(self):
+        t = RecordingTransport([])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        args = self._parse(["--apply", "--confirm", "wrong", "env", "delete", "u1", "e9"])
+        with self.assertRaises(coolify.ConfirmError):
+            coolify.dispatch(c, args)
+        self.assertEqual(t.calls, [])
+
+    def test_env_delete_with_matching_confirm_proceeds(self):
+        t = RecordingTransport([(200, {}, {"deleted": True})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        args = self._parse(["--apply", "--confirm", "e9", "env", "delete", "u1", "e9"])
+        out = coolify.dispatch(c, args)
+        self.assertEqual(out, {"deleted": True})
+        self.assertEqual(t.calls[0][0], "DELETE")
+        self.assertTrue(t.calls[0][1].endswith("/applications/u1/envs/e9"))
+
 
 if __name__ == "__main__":
     unittest.main()
