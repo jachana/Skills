@@ -99,5 +99,28 @@ class TestSafety(unittest.TestCase):
         self.assertEqual(out, {"deleted": True})
 
 
+class TestRetry(unittest.TestCase):
+    def test_429_then_success_sleeps_retry_after(self):
+        slept = []
+        t = RecordingTransport([
+            (429, {"Retry-After": "5"}, {"message": "slow down"}),
+            (200, {}, {"ok": True}),
+        ])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s",
+                                  transport=t, sleeper=slept.append)
+        out = c.get("/deployments/dep1")
+        self.assertEqual(out, {"ok": True})
+        self.assertEqual(slept, [5.0])
+        self.assertEqual(len(t.calls), 2)
+
+    def test_429_exhausts_then_raises(self):
+        t = RecordingTransport([(429, {}, {"m": "x"})] * 10)
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s",
+                                  transport=t, sleeper=lambda *_: None, max_retries=3)
+        with self.assertRaises(coolify.APIError) as cm:
+            c.get("/deployments/dep1")
+        self.assertEqual(cm.exception.status, 429)
+
+
 if __name__ == "__main__":
     unittest.main()
