@@ -206,6 +206,11 @@ DB_ENGINES = {e: f"/databases/{e}" for e in (
 ENV_BASE = {"app": "/applications", "db": "/databases", "svc": "/services"}
 
 
+def _read_json_arg(src):
+    text = sys.stdin.read() if src == "-" else Path(src).read_text(encoding="utf-8")
+    return json.loads(text)
+
+
 def parse_env_file(text):
     text = text.strip()
     if text.startswith("{"):
@@ -251,6 +256,37 @@ def build_parser():
     dep.add_parser("get").add_argument("uuid")
     dep.add_parser("history").add_argument("app_uuid")
 
+    # create verbs (variant/engine aware)
+    appc = _find_sub(p, "apps").add_parser("create")
+    appc.add_argument("variant", choices=sorted(APP_CREATE))
+    appc.add_argument("--json-body", required=True, help="path to JSON body, or - for stdin")
+    dbc = _find_sub(p, "db").add_parser("create")
+    dbc.add_argument("engine", choices=sorted(DB_ENGINES))
+    dbc.add_argument("--json-body", required=True, help="path to JSON body, or - for stdin")
+
+    env = sub.add_parser("env").add_subparsers(dest="action")
+    for name in ("list", "set", "set-bulk", "delete"):
+        ep = env.add_parser(name)
+        ep.add_argument("--target", choices=("app", "db", "svc"), default="app")
+        ep.add_argument("uuid")
+        if name == "set":
+            ep.add_argument("pair", help="KEY=VALUE")
+        if name == "set-bulk":
+            ep.add_argument("file", help="path to .env-style or JSON file")
+        if name == "delete":
+            ep.add_argument("env_uuid")
+
+    dp = sub.add_parser("deploy")
+    dp.add_argument("uuid", nargs="?")
+    dp.add_argument("--tag", default=None)
+    dp.add_argument("--force", action="store_true")
+
+    # extend the existing `deployment` subparser created above:
+    depsub = _find_sub(p, "deployment")
+    w = depsub.add_parser("wait")
+    w.add_argument("uuid")
+    w.add_argument("--timeout", type=int, default=600)
+
     return p
 
 
@@ -290,4 +326,56 @@ def dispatch(client, args):
             return client.get(f"/deployments/{args.uuid}")
         if args.action == "history":
             return client.get(f"/deployments/applications/{args.app_uuid}")
+        if args.action == "wait":
+            return wait_for_deployment(client, args.uuid, timeout=args.timeout)
+
+    # lifecycle (apps/db/svc) ----------------------------------------------------
+    if g in ("apps", "db", "svc") and args.action in ("start", "stop", "restart"):
+        return client.post(f"{ITEM_PREFIX[g]}/{args.uuid}/{args.action}")
+
+    # delete (destructive) -------------------------------------------------------
+    if g in LIST_PATHS and args.action == "delete":
+        name = args.confirm
+        if client.apply:
+            try:
+                name = client.get(f"{ITEM_PREFIX[g]}/{args.uuid}").get("name", args.confirm)
+            except APIError:
+                name = args.confirm
+        return client.delete(f"{ITEM_PREFIX[g]}/{args.uuid}",
+                             destructive=True, confirm=args.confirm, resource_name=name)
+
+    # create ---------------------------------------------------------------------
+    if g == "apps" and args.action == "create":
+        return client.post(APP_CREATE[args.variant], body=_read_json_arg(args.json_body))
+    if g == "db" and args.action == "create":
+        return client.post(DB_ENGINES[args.engine], body=_read_json_arg(args.json_body))
+
+    # env ------------------------------------------------------------------------
+    if g == "env":
+        base = f"{ENV_BASE[args.target]}/{args.uuid}/envs"
+        if args.action == "list":
+            return client.get(base)
+        if args.action == "set":
+            k, _, v = args.pair.partition("=")
+            return client.post(base, body={"key": k, "value": v})
+        if args.action == "set-bulk":
+            data = parse_env_file(Path(args.file).read_text(encoding="utf-8"))
+            body = {"data": [{"key": k, "value": v} for k, v in data.items()]}
+            return client.patch(base + "/bulk", body=body)
+        if args.action == "delete":
+            return client.delete(f"{base}/{args.env_uuid}",
+                                 destructive=True, confirm=args.confirm,
+                                 resource_name=args.confirm)
+
+    # deploy ---------------------------------------------------------------------
+    if g == "deploy":
+        q = []
+        if args.uuid:
+            q.append(f"uuid={args.uuid}")
+        if args.tag:
+            q.append(f"tag={args.tag}")
+        if args.force:
+            q.append("force=true")
+        return client.post("/deploy?" + "&".join(q))
+
     raise ValueError(f"unknown or write command not yet wired: {g} {getattr(args,'action',None)}")

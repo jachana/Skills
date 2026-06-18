@@ -194,5 +194,48 @@ class TestDispatchReads(unittest.TestCase):
         self.assertTrue(t.calls[0][1].endswith("/deployments/d1"))
 
 
+class TestDispatchWrites(unittest.TestCase):
+    def _parse(self, argv):
+        return coolify.build_parser().parse_args(argv)
+
+    def test_restart_is_dryrun_by_default(self):
+        t = RecordingTransport([])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t)
+        out = coolify.dispatch(c, self._parse(["apps", "restart", "u1"]))
+        self.assertIsInstance(out, coolify.DryRun)
+        self.assertEqual(t.calls, [])
+
+    def test_restart_apply_posts(self):
+        t = RecordingTransport([(200, {}, {"ok": True})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        coolify.dispatch(c, self._parse(["--apply", "apps", "restart", "u1"]))
+        self.assertEqual(t.calls[0][0], "POST")
+        self.assertTrue(t.calls[0][1].endswith("/applications/u1/restart"))
+
+    def test_delete_needs_confirm(self):
+        t = RecordingTransport([(200, {}, {"uuid": "u1", "name": "web"})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        args = self._parse(["--apply", "--confirm", "wrong", "apps", "delete", "u1"])
+        with self.assertRaises(coolify.ConfirmError):
+            coolify.dispatch(c, args)
+
+    def test_env_set_builds_body(self):
+        t = RecordingTransport([(200, {}, {"ok": True})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        coolify.dispatch(c, self._parse(["--apply", "env", "set", "u1", "FOO=bar"]))
+        method, url, body = t.calls[0]
+        self.assertEqual(method, "POST")
+        self.assertTrue(url.endswith("/applications/u1/envs"))
+        self.assertEqual(json.loads(body), {"key": "FOO", "value": "bar"})
+
+    def test_deploy_builds_query(self):
+        t = RecordingTransport([(200, {}, {"deployments": [{"deployment_uuid": "d1"}]})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        coolify.dispatch(c, self._parse(["--apply", "deploy", "u1", "--force"]))
+        url = t.calls[0][1]
+        self.assertIn("uuid=u1", url)
+        self.assertIn("force=true", url)
+
+
 if __name__ == "__main__":
     unittest.main()
