@@ -253,6 +253,42 @@ class TestDispatchWrites(unittest.TestCase):
         self.assertEqual(t.calls[0][0], "DELETE")
         self.assertTrue(t.calls[0][1].endswith("/applications/u1/envs/e9"))
 
+    def test_env_set_bulk_patches_bulk_endpoint(self):
+        import tempfile, os as _os
+        t = RecordingTransport([(200, {}, {"ok": True})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        fd, path = tempfile.mkstemp(suffix=".env")
+        try:
+            with _os.fdopen(fd, "w") as fh:
+                fh.write("FOO=bar\nBAZ=qux\n")
+            coolify.dispatch(c, self._parse(["--apply", "env", "set-bulk", "u1", path]))
+        finally:
+            _os.remove(path)
+        method, url, body = t.calls[0]
+        self.assertEqual(method, "PATCH")
+        self.assertTrue(url.endswith("/applications/u1/envs/bulk"))
+        self.assertEqual(json.loads(body), {"data": [{"key": "FOO", "value": "bar"},
+                                                     {"key": "BAZ", "value": "qux"}]})
+
+    def test_delete_aborts_when_name_lookup_fails(self):
+        # name-lookup GET returns 403; the DELETE must never be reached
+        t = RecordingTransport([(403, {}, {"message": "forbidden"})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        args = self._parse(["--apply", "--confirm", "web", "apps", "delete", "u1"])
+        with self.assertRaises(coolify.APIError):
+            coolify.dispatch(c, args)
+        self.assertEqual(len(t.calls), 1)          # only the GET happened
+        self.assertEqual(t.calls[0][0], "GET")
+
+    def test_delete_aborts_when_name_missing(self):
+        # item has no "name" field -> cannot verify --confirm -> refuse
+        t = RecordingTransport([(200, {}, {"uuid": "u1"})])
+        c = coolify.CoolifyClient("https://ex.test/api/v1", "1|s", transport=t, apply=True)
+        args = self._parse(["--apply", "--confirm", "web", "apps", "delete", "u1"])
+        with self.assertRaises(coolify.ConfirmError):
+            coolify.dispatch(c, args)
+        self.assertEqual(len(t.calls), 1)          # GET only, no DELETE
+
 
 class TestMain(unittest.TestCase):
     def test_format_json_dryrun(self):

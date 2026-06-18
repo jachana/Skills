@@ -31,7 +31,7 @@ Drive Coolify resources through `scripts/coolify.py`. Reply in the user's langua
 Every write is dry-run by default. **Show the user the `WOULD …` preview, get a yes, then
 re-run with `--apply`.**
 - Lifecycle: `python $CO apps restart <uuid>` → preview; `… apps restart <uuid> --apply` → do it.
-- Env: `python $CO env set <uuid> KEY=value --target app` (preview) → add `--apply`.
+- Env: `python $CO env set <uuid> KEY=VALUE --target app` (preview) → add `--apply`.
   - Bulk: `python $CO env set-bulk <uuid> path/to/vars.env --apply`.
 - Create app: `python $CO apps create <variant> --json-body body.json --apply`
   (variants: public, private-github-app, private-deploy-key, dockerfile, dockerimage —

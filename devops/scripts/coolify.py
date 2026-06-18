@@ -7,7 +7,7 @@ also need --confirm <resource-name>.
 
 Run `python coolify.py --self-test` to run the offline test suite.
 """
-import argparse, json, os, sys, time, urllib.error, urllib.request
+import argparse, json, os, sys, time, urllib.error, urllib.parse, urllib.request
 from pathlib import Path
 
 
@@ -335,12 +335,17 @@ def dispatch(client, args):
 
     # delete (destructive) -------------------------------------------------------
     if g in LIST_PATHS and args.action == "delete":
-        name = args.confirm
+        name = None
         if client.apply:
-            try:
-                name = client.get(f"{ITEM_PREFIX[g]}/{args.uuid}").get("name", args.confirm)
-            except APIError:
-                name = args.confirm
+            # Verify the real resource name so --confirm can't be bypassed.
+            # Let an APIError from the lookup propagate (don't fall back to a value
+            # that makes the confirm check trivially pass).
+            item = client.get(f"{ITEM_PREFIX[g]}/{args.uuid}")
+            name = item.get("name")
+            if name is None:
+                raise ConfirmError(
+                    f"Could not determine the name of {g} {args.uuid} to verify "
+                    f"--confirm; refusing to delete.")
         return client.delete(f"{ITEM_PREFIX[g]}/{args.uuid}",
                              destructive=True, confirm=args.confirm, resource_name=name)
 
@@ -369,14 +374,14 @@ def dispatch(client, args):
 
     # deploy ---------------------------------------------------------------------
     if g == "deploy":
-        q = []
+        params = {}
         if args.uuid:
-            q.append(f"uuid={args.uuid}")
+            params["uuid"] = args.uuid
         if args.tag:
-            q.append(f"tag={args.tag}")
+            params["tag"] = args.tag
         if args.force:
-            q.append("force=true")
-        return client.post("/deploy?" + "&".join(q))
+            params["force"] = "true"
+        return client.post("/deploy?" + urllib.parse.urlencode(params))
 
     raise ValueError(f"unknown or write command not yet wired: {g} {getattr(args,'action',None)}")
 

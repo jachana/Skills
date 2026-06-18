@@ -29,8 +29,10 @@ Never writes. Reply in the user's language (EN/ES). `CO = devops/scripts/coolify
 - Confirm each app's `fqdn` is intended.
 
 ## 4. Server health
-- `python $CO server list` → for any unvalidated server, recommend
-  `python $CO server validate <uuid>` (that one is read-only; it runs Coolify's validation pipeline).
+- `python $CO server list` → for any unvalidated server, note its uuid and tell the
+  user/operator to run `python $CO server validate <uuid>` themselves (or hand off to
+  the `coolify` skill). Do NOT run `server validate` here — it triggers a server-side
+  validation pipeline and is therefore a side effect, not a read.
 
 ## 5. Report
 - Produce a short, skimmable report (pairs with reporting/human-readable-report):
