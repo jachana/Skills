@@ -16,10 +16,11 @@ description: >-
 Drive Coolify resources through `scripts/coolify.py`. Reply in the user's language (EN/ES).
 
 ## 0. Locate the helper + confirm connectivity
-- `CO = devops/scripts/coolify.py`.
+- `CO` = this skill's helper at `scripts/coolify.py` (ships with this skill).
 - `python $CO ping` → confirms `COOLIFY_BASE_URL` + token work. If it errors about config,
-  tell the user to copy `devops/.env.example` to `.env` and fill it in (token from
-  Coolify → Keys & Tokens → API Tokens; add `read:sensitive` to see env values).
+  tell the user to copy this skill's `.env.example` to `.env` (or export the two vars) and
+  fill it in (token from Coolify → Keys & Tokens → API Tokens; add `read:sensitive` to see
+  env values).
 
 ## 1. Inspect (reads — always safe)
 - `python $CO apps list` / `db list` / `svc list` / `server list` / `project list`

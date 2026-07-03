@@ -12,7 +12,8 @@ description: >-
 
 # Coolify read-only audit
 
-Never writes. Reply in the user's language (EN/ES). `CO = devops/scripts/coolify.py`.
+Never writes. Reply in the user's language (EN/ES). `CO` = the `coolify.py` shipped with the
+companion **coolify** skill (`coolify/scripts/coolify.py` in your skills dir — install it alongside).
 
 ## 1. Inventory
 - `python $CO resources --json` → everything on the instance.

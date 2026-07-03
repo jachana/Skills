@@ -11,7 +11,8 @@ description: >-
 
 # Coolify deploy + build validation
 
-Reply in the user's language (EN/ES). `CO = devops/scripts/coolify.py`.
+Reply in the user's language (EN/ES). `CO` = the `coolify.py` shipped with the companion
+**coolify** skill (`coolify/scripts/coolify.py` in your skills dir — install it alongside).
 
 ## 1. Identify the app
 - `python $CO apps list` → find the target app uuid (confirm with the user if ambiguous).

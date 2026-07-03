@@ -1,6 +1,7 @@
 # devops — Coolify control from Claude Code
 
-Three skills over one stdlib-only API helper (`scripts/coolify.py`) that drives a
+Three skills over one stdlib-only API helper (`coolify/scripts/coolify.py` — it ships
+inside the `coolify` skill so deployed copies are self-contained) that drives a
 self-hosted [Coolify](https://coolify.io) PaaS (v4, API `v1`).
 
 | Skill | What it does |
@@ -11,11 +12,11 @@ self-hosted [Coolify](https://coolify.io) PaaS (v4, API `v1`).
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and fill in `COOLIFY_BASE_URL` + `COOLIFY_API_TOKEN`.
+1. Copy `coolify/.env.example` to `.env` and fill in `COOLIFY_BASE_URL` + `COOLIFY_API_TOKEN`.
    - Base URL ends with `/api/v1`.
    - Token: Coolify dashboard → **Keys & Tokens → API Tokens** (shown once).
    - Abilities: `read`, plus `read:sensitive` to see env **values**, plus `write`/`deploy` for mutations.
-2. `python scripts/coolify.py ping` to confirm connectivity.
+2. `python coolify/scripts/coolify.py ping` to confirm connectivity.
 
 ## Safety model
 
@@ -30,7 +31,7 @@ what's missing — it is never bricked by a missing server.
 
 ## Test
 
-`python scripts/coolify.py --self-test`  (or `python -m unittest -v` in `scripts/`)
+`python coolify/scripts/coolify.py --self-test`  (or `python -m unittest -v` in `coolify/scripts/`)
 
 ## Secrets policy
 
