@@ -1,14 +1,16 @@
 {
-  "title": "Email",
-  "description": "Draft email replies grounded in your second brain and keep long threads coherent. Asks instead of inventing; never sends without approval.",
+  "title": "Comms",
+  "description": "Client-facing communication in any medium. Confirms channel and tone before drafting, grounds facts in your second brain, and never sends without approval.",
   "order": 4,
   "skills": {
+    "client-comms": "Right channel, right tone, first time — confirms the medium (email/Teams/WhatsApp), applies per-client style notes, defaults to active-work framing.",
     "email-assistant": "Draft replies and new messages grounded in the second brain, and track multi-message threads."
   },
   "es": {
-    "title": "Correo",
-    "description": "Redacta respuestas de correo basadas en tu segundo cerebro y mantén coherentes los hilos largos. Pregunta en vez de inventar; nunca envía sin aprobación.",
+    "title": "Comunicaciones",
+    "description": "Comunicación con clientes en cualquier medio. Confirma canal y tono antes de redactar, basa los hechos en tu segundo cerebro y nunca envía sin aprobación.",
     "skills": {
+      "client-comms": "Canal correcto, tono correcto, a la primera — confirma el medio (email/Teams/WhatsApp), aplica notas de estilo por cliente y asume trabajo activo.",
       "email-assistant": "Redacta respuestas y mensajes nuevos basados en el segundo cerebro, y hace seguimiento de hilos."
     }
   }

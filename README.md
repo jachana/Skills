@@ -38,8 +38,20 @@ No credentials live in this repo. Skills that need keys (Trello, email, etc.) sh
 | [`email/`](email/) | **Email assistant** — draft replies grounded in your second-brain, and track multi-message threads so context never gets lost. |
 | [`quality/`](quality/) | **`prove-it` validation discipline** — forces the model to *programmatically verify* claims and show the evidence instead of asserting "done ✅". |
 | [`devops/`](devops/) | **Coolify control.** Drive a self-hosted Coolify PaaS — resource management (`coolify`), build-validated deploys (`coolify-deploy`), and read-only config audits (`coolify-audit`) — via one stdlib-only API helper. Dry-run by default. |
+| [`games/`](games/) | **Game dev lifecycle.** Ranked improvement analysis (`game-improvement-analysis`), post-change runtime verification with visual evidence (`runtime-verify`), and publishing pipelines for itch.io (`release-itch`) and Google Play (`release-play`). |
+| [`dev-workflow/`](dev-workflow/) | **Issue → PR discipline.** One issue = one branch = one PR with red→green tests and before/after evidence, adapting to each repo's conventions (`issue-fix-workflow`). |
 
 Each category folder has its own `README.md` with setup details.
+
+### Model & effort annotations
+
+Every skill carries a **`## Model & effort`** section mapping its phases to the cheapest
+model tier that does the job (haiku for script/mechanical work, sonnet for coding and
+routine judgment, opus for high-stakes judgment — client-facing drafts, architecture,
+cross-project synthesis). Two conventions: if the session runs **below** a phase's tier,
+warn the user before that phase; if **above**, delegate the cheap phases to a subagent
+with an explicit `model:` instead of burning the big model on them. Frontier tiers above
+opus are an exception reserved for large multi-project/whole-codebase synthesis.
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "title": "Dev workflow",
+  "description": "Disciplined development flows: take one GitHub issue from pick to a tested PR with before/after evidence, adapting to each repo's conventions.",
+  "order": 8,
+  "skills": {
+    "issue-fix-workflow": "One issue = one branch = one PR: detect repo conventions, reproduce first, fix only the issue, prove it red→green, open the PR with evidence."
+  },
+  "es": {
+    "title": "Flujo de desarrollo",
+    "description": "Flujos de desarrollo disciplinados: lleva UN issue de GitHub desde que se elige hasta un PR probado con evidencia antes/después, adaptándose a las convenciones de cada repo.",
+    "skills": {
+      "issue-fix-workflow": "Un issue = una rama = un PR: detecta convenciones del repo, reproduce primero, arregla solo el issue, demuéstralo rojo→verde y abre el PR con evidencia."
+    }
+  }
+}

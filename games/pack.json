@@ -1,0 +1,21 @@
+{
+  "title": "Games",
+  "description": "Game development lifecycle: prioritized improvement analysis, runtime verification after changes and migrations, and multi-platform publishing to itch.io and Google Play.",
+  "order": 7,
+  "skills": {
+    "game-improvement-analysis": "Analyze a game's codebase into a ranked, actionable improvement report (Fun > Feel > Performance > Challenge > Consistency).",
+    "runtime-verify": "Run the game and capture visual evidence after changes/migrations — never declare a gameplay change done from the diff alone.",
+    "release-itch": "Bump, commit, push, then build + butler-push multi-platform builds to itch.io.",
+    "release-play": "Build a signed Android AAB, validate it, prepare bilingual store assets, and stage a Google Play release."
+  },
+  "es": {
+    "title": "Juegos",
+    "description": "Ciclo de vida de desarrollo de juegos: análisis de mejoras priorizado, verificación en runtime tras cambios y migraciones, y publicación multiplataforma a itch.io y Google Play.",
+    "skills": {
+      "game-improvement-analysis": "Analiza el código de un juego y produce un reporte de mejoras accionable y priorizado (Diversión > Feel > Rendimiento > Reto > Consistencia).",
+      "runtime-verify": "Ejecuta el juego y captura evidencia visual tras cambios/migraciones — nunca des por hecho un cambio de gameplay solo por el diff.",
+      "release-itch": "Sube versión, commitea, pushea y publica builds multiplataforma a itch.io vía butler.",
+      "release-play": "Compila un AAB firmado, lo valida, prepara assets bilingües de la tienda y deja lista una release de Google Play."
+    }
+  }
+}

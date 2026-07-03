@@ -4,14 +4,16 @@
   "order": 2,
   "skills": {
     "human-readable-report": "Write a status update, summary, analysis or briefing — conclusion first, skimmable, evidence-backed.",
-    "proposal-writer": "Draft a client proposal or quote — scope, deliverables, timeline, price — grounded in the second brain."
+    "proposal-writer": "Draft a client proposal or quote — scope, deliverables, timeline, price — grounded in the second brain.",
+    "package-report": "Assemble a client deliverable zip — open/validate every artifact (graphs draw, PDFs render, CSVs parse) before packaging."
   },
   "es": {
     "title": "Reportes",
     "description": "Convierte trabajo en bruto y contexto del proyecto en documentos que la gente sí lee: reportes que parten por la conclusión y propuestas basadas en capacidades reales.",
     "skills": {
       "human-readable-report": "Escribe un informe de avance, resumen, análisis o briefing — conclusión primero, escaneable, con evidencia.",
-      "proposal-writer": "Redacta una propuesta o cotización — alcance, entregables, plazos, precio — basada en el segundo cerebro."
+      "proposal-writer": "Redacta una propuesta o cotización — alcance, entregables, plazos, precio — basada en el segundo cerebro.",
+      "package-report": "Arma el zip de entrega al cliente — abre/valida cada artefacto (gráficos dibujan, PDFs renderizan, CSVs parsean) antes de empaquetar."
     }
   }
 }
