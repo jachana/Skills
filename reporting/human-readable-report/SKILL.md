@@ -15,6 +15,15 @@ Default failure mode of AI reports: a flat wall of text that buries the answer. 
 ## Language / Idioma
 Write the report in the user's language (EN/ES). If the audience differs from the user (e.g. user writes Spanish but the report is for an English client), ask which language the **report** should be in.
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Gather + structure source material | sonnet | medium | selection is judgment |
+| Internal / teammate report | sonnet | medium | |
+| Exec or client-facing strategic report | opus | high | the recommendation carries weight beyond the page |
+
+Session below the audience's tier → tell the user before writing.
+
 ## Before writing — get three things
 1. **Audience** — who reads this? (exec / client / teammate / your future self). Drives depth and jargon.
 2. **Purpose** — decision needed, status reassurance, or a record? Drives what leads.

@@ -16,6 +16,13 @@ You are registering a repository with a **central Obsidian vault** (the "brain")
 ## Language / Idioma
 Reply in the user's language. If they wrote Spanish, run the whole interaction in Spanish (questions, confirmations, summary); if English, English. Keep frontmatter field *names* in English (the sync script parses them).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Whole flow (metadata Q&A, template fill, sync run) | haiku–sonnet | low | form-filling; the sync script does the real work |
+
+Never escalate for this skill.
+
 ## Locate the vault (no hardcoded paths)
 
 1. Read `BRAIN_PATH` from the environment. That is the vault root.

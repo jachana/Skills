@@ -16,6 +16,15 @@ A **root-brain** capability. It looks across all project notes to spot leverage:
 ## Language / Idioma
 Report in the user's language (EN/ES).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Candidate pairs (Brain-Connect.ps1) | haiku | low | script work |
+| Discard shallow matches (step 2 first pass) | haiku subagents | low | cheap filter before the expensive read |
+| Reuse reasoning + recommendations | opus | high | cross-domain judgment IS the product |
+
+A whole-vault synthesis across many active projects is one of the few legitimate Fable exceptions; everything else caps at opus. Session below opus for step 3 → tell the user the recommendations may miss non-obvious links.
+
 ## Step 1 — Get candidate pairs (don't eyeball the whole vault)
 Run the heuristic finder so you start from grounded candidates, not a vibe:
 ```powershell

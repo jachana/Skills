@@ -15,6 +15,14 @@ description: >-
 Never writes. Reply in the user's language (EN/ES). `CO` = the `coolify.py` shipped with the
 companion **coolify** skill (`coolify/scripts/coolify.py` in your skills dir — install it alongside).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Inventory pulls (steps 1–2 commands) | haiku | low | script work |
+| Hygiene/exposure judgment + report (steps 2–5) | sonnet | medium | deciding what's a secret or a risky port is judgment |
+
+Session above sonnet → pull the inventory in a `model: haiku` subagent, judge in the session.
+
 ## 1. Inventory
 - `python $CO resources --json` → everything on the instance.
 - Cross-check `python $CO apps list`, `db list`, `svc list`, `server list`.

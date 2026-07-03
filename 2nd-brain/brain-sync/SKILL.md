@@ -15,6 +15,9 @@ The `.brain/` folder in (or near) your working directory bridges this repo to a 
 ## Language / Idioma
 Reply in the user's language (EN/ES). `LOG.md` / `STATUS.md` / `ANSWERS.md` content may be written in whichever language the user works in; keep the **field names** (`phase:`, `progress:`, `Q:`, `A:`, etc.) exactly as below so the sync script parses them.
 
+## Model & effort
+This protocol is ambient — it runs inside whatever session is already active, at that session's model. The bookkeeping itself (reading the 7 files, appending LOG/STATUS/ANSWERS lines) is haiku-grade, low effort: never escalate a session for it, and never let it distract a big model mid-task — batch the appends at natural pauses.
+
 ## Discover the .brain/ folder
 It's usually at the repo root but may be up to ~3 levels up. Walk upward:
 ```bash

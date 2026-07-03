@@ -16,6 +16,15 @@ This is a **root-brain** capability: it reads every project note in the vault an
 ## Language / Idioma
 Write the narrative in the user's language (EN/ES). The aggregator's tables stay as generated.
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Aggregator run (Brain-Report.ps1) | haiku | low | the script computes the facts |
+| Narrative, risks, recommended focus | sonnet | medium | judgment over the numbers |
+| Strategic readout for stakeholders / big decisions | opus | high | the recommendation carries weight |
+
+Session above the need → run the aggregator step cheap; the narrative rarely needs more than sonnet.
+
 ## Step 1 — Run the deterministic aggregator
 Locate `Brain-Report.ps1` (this category's `scripts/`). It does the parsing so you don't hallucinate numbers.
 ```powershell

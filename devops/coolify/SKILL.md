@@ -15,6 +15,14 @@ description: >-
 
 Drive Coolify resources through `scripts/coolify.py`. Reply in the user's language (EN/ES).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Reads (list/get/logs/resources) | haiku | low | script work |
+| Mutations (preview → `--apply`) | sonnet | medium | picking the right change needs judgment; the dry-run/confirm gates stay regardless of model |
+
+Session above sonnet → delegate the read commands to a `model: haiku` subagent.
+
 ## 0. Locate the helper + confirm connectivity
 - `CO` = this skill's helper at `scripts/coolify.py` (ships with this skill).
 - `python $CO ping` → confirms `COOLIFY_BASE_URL` + token work. If it errors about config,

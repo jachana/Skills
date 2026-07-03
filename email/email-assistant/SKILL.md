@@ -16,6 +16,15 @@ Two jobs: write a good reply grounded in real context, and keep a record of the 
 ## Language / Idioma
 Detect the incoming email's language and draft the reply in **that** language. Mirror the sender's formality (tú/usted, first-name vs. formal). If the user wants a different language, follow their instruction.
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Thread-file bookkeeping (steps 1, 4) | any | low | mechanical |
+| Drafting client-facing text | **sonnet — hard floor, never haiku** | medium | tone/register misses are the top rework cause in client comms |
+| Delicate / high-stakes thread (upset client, money, commitments) | opus | high | one wrong sentence costs more than the tokens |
+
+Session below sonnet → stop and tell the user before drafting anything client-facing.
+
 ## Step 1 — Identify or open the thread
 A thread is tracked as one Markdown file at `${EMAIL_THREADS_DIR:-./email-threads}/<slug>.md`, where `<slug>` derives from the subject (strip `Re:`/`RE:`/`Fwd:`, slugify).
 - If the file exists, **read it first** — it holds the running summary, open asks, and commitments.

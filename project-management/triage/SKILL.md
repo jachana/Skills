@@ -15,6 +15,14 @@ Turn an undifferentiated pile into a prioritized, routed board. Decide; don't ju
 ## Language / Idioma
 Work and report in the user's language (EN/ES).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Board sync/apply (board.py) | haiku | low | script work |
+| Route + priority + size + dependencies | sonnet | medium | judgment against real scope, not generation |
+
+Session above sonnet → delegate the board ops to a cheap subagent (`model: haiku`); the judgment pass doesn't need more than sonnet.
+
 ## Steps
 1. **Sync first.** `python board.py status`; if online, `python board.py pull` (remote wins).
 2. **Read the unsorted items** — cards in `Backlog`/inbox without a priority or clear home.

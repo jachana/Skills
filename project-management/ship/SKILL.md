@@ -17,6 +17,16 @@ A disciplined loop from "top of backlog" to "In review". Never claims success wi
 ## Language / Idioma
 Reply in the user's language (EN/ES). Commit messages stay in conventional-commit English (`feat(area): …`) unless the user's repo convention says otherwise.
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Board ops via board.py (steps 0, 1, 6, 7) | haiku | low | the script does the work |
+| Already-done check (step 2) | haiku / Explore subagent | low | grep + read, no generation |
+| Implement + tests (steps 3–5) | sonnet | medium | real coding |
+| Architectural / multi-system card | opus | high | design tradeoffs before code |
+
+Session below the peak this card needs → tell the user before implementing. Session above → run board ops and the step-2 check in a subagent with an explicit `model:` instead of burning the big model on them.
+
 ## 0. Locate the board helper + detect mode
 - Find `board.py` (this category's `scripts/board.py`; copy it into the repo's `scripts/` or reference it directly). Let `BOARD = path to board.py`.
 - Run `python $BOARD status`.

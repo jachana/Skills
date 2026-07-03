@@ -19,6 +19,14 @@ A refined backlog means the next person can pick the top card and start with zer
 ## Language / Idioma
 Work and report in the user's language (EN/ES).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Board ops (board.py) | haiku | low | script work |
+| Enrich cards / groom pass | sonnet | low–medium | acceptance criteria need judgment, not depth |
+
+Session above sonnet → delegate board ops to a `model: haiku` subagent; don't escalate for grooming.
+
 ## Enrich a single card
 Bring a thin card up to "ready":
 1. **Context** — what and why, in plain terms; link the relevant repo / second-brain notes.

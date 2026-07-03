@@ -14,6 +14,14 @@ description: >-
 Reply in the user's language (EN/ES). `CO` = the `coolify.py` shipped with the companion
 **coolify** skill (`coolify/scripts/coolify.py` in your skills dir — install it alongside).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Trigger + poll (deploy, `deployment wait`) | haiku | low | script work |
+| Failure diagnosis from build logs | sonnet | medium | reading a broken build is judgment |
+
+Session above sonnet → trigger/poll in a `model: haiku` subagent; only the FAIL path needs the session's attention.
+
 ## 1. Identify the app
 - `python $CO apps list` → find the target app uuid (confirm with the user if ambiguous).
 

@@ -17,6 +17,9 @@ The rule: **a claim of success is not done until it's verified with evidence the
 ## Language / Idioma
 Explain and report in the user's language (EN/ES). Command output stays verbatim.
 
+## Model & effort
+Model-agnostic by design — this discipline binds whatever model is running. Running the checks is cheap on any model; two things are non-negotiable regardless: never delegate the honesty judgment (reading output, deciding VERIFIED vs not) to a smaller model to save tokens, and verification effort stays high even when the change felt trivial.
+
 ## The core loop — for every success claim
 1. **State the claim precisely.** What, specifically, is supposed to be true now? ("The login endpoint returns 401 on a bad password.")
 2. **Pick the cheapest test that would FALSIFY it.** Think like a skeptic: what observation would prove the claim wrong?

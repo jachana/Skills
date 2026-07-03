@@ -15,6 +15,14 @@ A proposal is a persuasion document with a number at the end. It must be credibl
 ## Language / Idioma
 Write in the client's language. Ask if unclear (the user may speak Spanish but pitch an English-speaking client).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Input gathering (scope, commercials, brain evidence) | sonnet | low | collection, not persuasion |
+| The draft itself | **opus** | high | pricing + persuasion tradeoffs; a lost proposal costs far more than the tokens |
+
+Session below opus when drafting → tell the user; a proposal is the wrong place to save model budget. Fable is not needed here.
+
 ## Gather inputs first (ask only what you can't infer)
 - **Client + their problem** — who, and the pain in their words.
 - **Scope** — what's explicitly in, and what's explicitly out (out-of-scope prevents disputes).

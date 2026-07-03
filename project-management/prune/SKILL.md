@@ -15,6 +15,14 @@ A board full of zombie cards hides the real work. Cut what's dead — but confir
 ## Language / Idioma
 Work and report in the user's language (EN/ES).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Candidate scan (dupes/stale/done) | haiku | low | pattern matching over the board |
+| Delete/archive/keep calls | sonnet | medium | a wrong delete loses work — and the user-confirmation gate stays regardless of model |
+
+Session above sonnet → run the scan in a `model: haiku` subagent; the classification doesn't need more than sonnet.
+
 ## Steps
 1. **Sync first.** `python board.py status`; if online, `python board.py pull`.
 2. **Scan for removal candidates:**

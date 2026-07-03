@@ -14,6 +14,15 @@ A card you can't finish in one sitting hides risk. Break it until each piece is 
 ## Language / Idioma
 Work and report in the user's language (EN/ES).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Read card + apply subtasks (board.py) | haiku | low | mechanical |
+| Decompose into shippable pieces | sonnet | medium | the split IS the judgment |
+| Architectural umbrella card (system boundaries, migrations) | opus | high | a wrong seam costs every subtask downstream |
+
+Session below the peak the card needs → tell the user before splitting. Session above → board ops go to a `model: haiku` subagent.
+
 ## Steps
 1. **Read the card** — its title, description, and any linked context (repo, second-brain notes).
 2. **Restate the goal** in one sentence so the split stays anchored to the outcome.

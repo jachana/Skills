@@ -17,6 +17,14 @@ chain is broken (cycles, references to cards that don't exist). Decision aid, no
 ## Language / Idioma
 Work and report in the user's language (EN/ES).
 
+## Model & effort
+| Phase | Model | Effort | Why |
+|---|---|---|---|
+| Render (dep_graph.py) | haiku | low | the script computes everything |
+| Interpret + act on diagnostics | sonnet | low | short judgment over structured output |
+
+Never escalate for this skill — the script carries the logic.
+
 ## Dependency convention
 A card declares its blockers with a single line in its description:
 
