@@ -14,7 +14,8 @@ Adding another tool = implement `pull()`/`push()` in a provider class in `script
 
 | Skill | Does |
 |---|---|
-| [`ship`](ship/) | Take the top card all the way to shipped — claim, verify it isn't already done, build + test, commit, move to *In review*, keep the board in sync. |
+| [`ship`](ship/) | Take the top card to the integration branch — claim, verify it isn't already done, build + test, PR to `develop` with evidence, merge, **then** move the card (e.g. *En develop*). Never touches master. |
+| [`release`](release/) | Promote `develop` → `master` as a versioned release (`vX.Y.Z`) — acceptance guide, full suite once, migration check, sandbox smoke on dev, human walkthrough, tag, prod verify, cards → released list. The one human review point. |
 | [`triage`](triage/) | Sort an unsorted pile — route each item, set priority **and size** (absolute *or* by comparison to 2 reference cards), **detect dependencies**, flag dupes/oversized/blocked. |
 | [`breakdown`](breakdown/) | Split an oversized/vague card into 3–7 small, ordered, independently-shippable subtasks with acceptance criteria. |
 | [`refine`](refine/) | **Backlog refinement / groom / enrich** (umbrella) — bring thin cards to "ready" (context + acceptance criteria + priority + right-sized); health-pass the top of the backlog. |

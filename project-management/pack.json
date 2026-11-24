@@ -3,23 +3,25 @@
   "description": "Kanban-style workflow skills. Work locally, or with Trello, Jira and others.",
   "order": 3,
   "skills": {
-    "ship": "Take the top card to shipped: claim, build, test, commit, move to review.",
+    "ship": "Take the top card to the integration branch: claim, build, test, PR to develop with evidence, merge, then move the card.",
     "triage": "Sort an incoming backlog: route, prioritize, size (absolute or vs 2 reference cards), and detect dependencies.",
     "refine": "Backlog refinement: enrich each item with context, acceptance criteria, estimate.",
     "breakdown": "Split an oversized or vague card into small, independently-shippable subtasks.",
     "prune": "Remove dead weight: duplicates, done-but-open, obsolete and zombie cards.",
-    "dependency-graph": "Print the dependency graph of open + closed cards: Mermaid, ASCII tree, cycles."
+    "dependency-graph": "Print the dependency graph of open + closed cards: Mermaid, ASCII tree, cycles.",
+    "release": "Promote develop to master as a versioned release: acceptance guide, full suite, migrations, sandbox smoke, human walkthrough, tag, prod verify."
   },
   "es": {
     "title": "Gestión de proyectos",
     "description": "Skills de flujo tipo kanban. Funcionan en local, o con Trello, Jira y otros.",
     "skills": {
-      "ship": "Lleva la tarjeta superior hasta entregada: reclama, construye, prueba, commitea, mueve a revisión.",
+      "ship": "Lleva la tarjeta superior hasta develop: reclama, construye, prueba, PR con evidencia, mergea y recién ahí mueve la tarjeta.",
       "triage": "Ordena el backlog: clasifica, prioriza, estima (absoluto o vs 2 tarjetas de referencia) y detecta dependencias.",
       "refine": "Refinamiento del backlog: enriquece cada ítem con contexto, criterios de aceptación y estimación.",
       "breakdown": "Divide una tarjeta grande o vaga en subtareas pequeñas y entregables por separado.",
       "prune": "Elimina peso muerto: duplicados, hechas-pero-abiertas, obsoletas y tarjetas zombi.",
-      "dependency-graph": "Imprime el grafo de dependencias de tarjetas abiertas + cerradas: Mermaid, árbol ASCII, ciclos."
+      "dependency-graph": "Imprime el grafo de dependencias de tarjetas abiertas + cerradas: Mermaid, árbol ASCII, ciclos.",
+      "release": "Pasa develop a master como release versionado: guía de aceptación, suite completa, migraciones, smoke en sandbox, revisión humana, tag y verificación en prod."
     }
   }
 }

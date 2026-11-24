@@ -18,8 +18,8 @@ Usage:
   python board.py show | status
   python board.py add  "Card name" [--list "Backlog"] [--desc "..."]
   python board.py move "Card name" --to "In progress"
-  python board.py claim "Card name"          # -> In progress
-  python board.py ship  "Card name"          # -> In review
+  python board.py claim "Card name"          # -> $PM_CLAIM_LIST (default In progress)
+  python board.py ship  "Card name"          # -> $PM_SHIP_LIST  (default In review)
   python board.py pick                         # top "ready" card
   python board.py rm   "Card name"
   python board.py pull                          # remote -> local (remote wins)
@@ -30,7 +30,10 @@ import argparse, base64, json, os, sys, urllib.parse, urllib.request, urllib.err
 from pathlib import Path
 
 DEFAULT_LISTS = ["Backlog", "To Do", "In progress", "In review", "Done"]
-CLAIM_LIST, SHIP_LIST = "In progress", "In review"
+# List names are overridable per repo (env or .env), e.g. a develop-flow board:
+#   PM_CLAIM_LIST="En progreso"  PM_SHIP_LIST="En develop"  PM_PICK_FROM="Bugs,Backlog"
+CLAIM_LIST = os.environ.get("PM_CLAIM_LIST", "In progress")
+SHIP_LIST = os.environ.get("PM_SHIP_LIST", "In review")
 
 
 # ── env / provider selection ───────────────────────────────────────────────
@@ -203,13 +206,19 @@ def cmd_move(a, path):
     if a.to not in b["lists"]: sys.exit(f"Unknown list '{a.to}'. Known: {', '.join(b['lists'])}")
     c["list"] = a.to; save(path, b); print(f"Moved '{c['name']}' -> {a.to}")
 
-def cmd_claim(a, path): a.to = CLAIM_LIST; cmd_move(a, path)
-def cmd_ship(a, path):  a.to = SHIP_LIST;  cmd_move(a, path)
+def cmd_claim(a, path): a.to = os.environ.get("PM_CLAIM_LIST", CLAIM_LIST); cmd_move(a, path)
+def cmd_ship(a, path):  a.to = os.environ.get("PM_SHIP_LIST", SHIP_LIST);  cmd_move(a, path)
 
 def cmd_pick(a, path):
     b = load(path)
-    # "Most ready" = pre-progress list closest to In progress (rightmost). Iterate right-to-left.
-    for lst in [l for l in b["lists"] if l not in (CLAIM_LIST, SHIP_LIST, "Done")][::-1]:
+    pick_from = [l.strip() for l in os.environ.get("PM_PICK_FROM", "").split(",") if l.strip()]
+    if pick_from:  # explicit priority order, first list wins
+        order = [l for l in pick_from if l in b["lists"]]
+    else:
+        # "Most ready" = pre-progress list closest to In progress (rightmost). Iterate right-to-left.
+        claim, ship = os.environ.get("PM_CLAIM_LIST", CLAIM_LIST), os.environ.get("PM_SHIP_LIST", SHIP_LIST)
+        order = [l for l in b["lists"] if l not in (claim, ship, "Done")][::-1]
+    for lst in order:
         for c in b["cards"]:
             if c["list"] == lst: print(c["name"]); return
     print("(no eligible cards)")
