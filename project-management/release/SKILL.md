@@ -48,8 +48,9 @@ Reply in the user's language (EN/ES). Acceptance guide and release notes in the 
 ## 2. Pick the version
 - Last tag: `git describe --tags --abbrev=0 origin/$REL` (or `git tag --sort=-creatordate | head -1`). Format `vMAJOR.MINOR.PATCH` (accept legacy `vX.Y` as `vX.Y.0`).
 - **Minor** bump (`v0.8.9 → v0.9.0`) if the range has any new feature, schema migration, config/env change, or behavior change a user would notice.
-- **Patch** bump (`v0.9.0 → v0.9.1`) if it's only bug fixes / copy / perf with no migration.
-- **Major** only on the user's explicit call. State the choice + one-line reason; the user can override.
+- **Patch** bump (`v0.9.0 → v0.9.1`) if it's only bug fixes / copy / perf with no migration. **Hotfixes share the patch number** — a hotfix on `REL` is just the next patch (`v0.9.1 → v0.9.2`); no `-hotfix` suffixes or 4th digit.
+- **Major** only on the user's explicit call.
+- Scheme: `vMAJOR.MINOR.PATCH` = major · minor (features) · patches-and-hotfixes. State the choice + one-line reason; the user can override.
 
 ## 3. Acceptance guide (what the human will click)
 - Collect PRs merged into `INT` in range: `gh pr list --base $INT --state merged --search "merged:>=<last tag date>" --json number,title,body,url,mergedAt` (cross-check with `git log --merges --first-parent origin/$REL..origin/$INT`). Collect the cards on the shipped list (e.g. *En develop*).
